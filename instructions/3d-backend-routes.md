@@ -24,7 +24,15 @@ project
 4. Inside `users.js` in the `routes` folder, add the following:
 
 ```js
+import express from "express"
 
+import { signin, signup } from "../controllers/user.js"
+const router = express.Router();
+
+router.post("/signin", signin)
+router.post("/signup", signup)
+
+export default router;
 ```
 
 5. Inside `index.js` in the `server` folder, add the following:
@@ -61,10 +69,14 @@ Now lets confirm if these new routes are working.
 
 7. Start the backend server if you haven't already
 
+<table><td>
+
 `Make sure you're in the server folder!`
 ```console
 npm start
 ```
+</td></table>
+
 
 8. Using an API platform such as `Postman`, make `POST` requests to the following links, making sure you get an appropriate return message from each:
     * `http://localhost:5000/users/signin`

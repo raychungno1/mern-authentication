@@ -23,7 +23,7 @@ This example will be hosted on MongoDB Atlas
 8. Click on `Connect your application`, the copy the connection string on the page
 
 9. Paste the connection string in the `.env` file in our `server` folder
-    * Make sure to replace `<usernsme>` and `<password>` with the database user you created in step 5
+    * Make sure to replace `<username>` and `<password>` with the database user you created in step 5
 
 ```diff
 PORT = 5000

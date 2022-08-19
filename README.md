@@ -25,3 +25,6 @@ The project is current still work-in-progress.
    - [Backend Models](./instructions/3b-backend-models.md)
    - [Backend Controllers](./instructions/3c-backend-controllers.md)
    - [Backend Routes](./instructions/3d-backend-routes.md)
+4. Frontend Infrastructure
+   - [Routes Setup]()
+   - [Redux Setup]()

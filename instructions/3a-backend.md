@@ -40,9 +40,13 @@ mongoose
 
 2. Try running the backend server
 
+<table><td>
+
 `Make sure you're in the server folder!`
 ```console
 npm start
 ```
+</td></table>
+
 
 You should see `Server running on port 5000` printed to the console.

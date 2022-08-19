@@ -19,11 +19,14 @@ npx create-react-app ./
    - `axios` an HTTP client to make requests
    - `jwt-decode` decodes JWT tokens
 
+<table><td>
+
 `Make sure you're in the client folder!`
 
 ```console
 npm i axios jwt-decode
 ```
+</td></table>
 
 4. **OPTIONAL:** to reduce clutter in the initial CRA app, I like to delete everything inside the `src` folder and replace it with just two files:
 
@@ -72,16 +75,19 @@ project
 
 You can now try starting the web server:
 
+<table><td>
+
 `Make sure you're in the client folder!`
 
 ```console
 npm start
 ```
+</td></table>
 
 5.  Navigate to the `server` folder and initialize the back end
 
-        * Create a file called `index.js` in the server folder
-        * This will be the starting point of our back end server
+    - Create a file called `index.js` in the server folder
+    - This will be the starting point of our back end server
 
     <br />
 
@@ -103,11 +109,14 @@ npm init -y
    - `mongoose` allows up to create models for our user
    - `nodemon` automatically restarts the node application when changes are detected
 
+<table><td>
+
 `Make sure you're in the server folder!`
 
 ```console
 npm i bcryptjs body-parser cors dotenv express jsonwebtoken mongoose nodemon
 ```
+</td></table>
 
 8. Finally, inside the `package.json` file in the `server` folder, make the following changes:
 
@@ -140,12 +149,17 @@ npm i bcryptjs body-parser cors dotenv express jsonwebtoken mongoose nodemon
 
 10. Add two additional files in the `server` folder for environment variables:
 
+<table><td>
+
 `.env.example`
 
 ```
 PORT = "PORT"
 CONNECTION_URL = "MONGO URL STRING"
 ```
+</td></table>
+
+<table><td>
 
 `.env`
 
@@ -153,6 +167,8 @@ CONNECTION_URL = "MONGO URL STRING"
 PORT = 5000
 CONNECTION_URL = ""
 ```
+</td></table>
+
 
 Our folder structure now looks like this:
 
