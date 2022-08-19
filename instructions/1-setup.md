@@ -11,13 +11,15 @@ project
 2. Navigate to the `client` folder and initialize the front end application
 
 ```console
-cd client 
+cd client
 npx create-react-app ./
 ```
 
 3. Install the nessecary dependencies for the front end application
-    * `axios` an HTTP client to make requests
-    * `jwt-decode` decodes JWT tokens
+   - `axios` an HTTP client to make requests
+   - `jwt-decode` decodes JWT tokens
+
+`Make sure you're in the client folder!`
 
 ```console
 npm i axios jwt-decode
@@ -68,13 +70,22 @@ project
 └───server
 ```
 
-5. Navigate to the `server` folder and initialize the back end 
+You can now try starting the web server:
 
-    * Create a file called `index.js` in the server folder
-    * This will be the starting point of our back end server
-<br />
+`Make sure you're in the client folder!`
 
-6. Initialize a `package.json` file in the `server` folder
+```console
+npm start
+```
+
+5.  Navigate to the `server` folder and initialize the back end
+
+        * Create a file called `index.js` in the server folder
+        * This will be the starting point of our back end server
+
+    <br />
+
+6.  Initialize a `package.json` file in the `server` folder
 
 ```console
 cd server
@@ -83,14 +94,19 @@ npm init -y
 
 7. Install the nessecary dependencies for the back end server
 
-    * `body-parser` allows us to send `POST` requests
-    * `cors` enables cross origin requests
-    * `express` a Node.js web framework
-    * `mongoose` allows up to create models for our user
-    * `nodemon` automatically restarts the node application when changes are detected
+   - `bcryptjs` hashes passwords
+   - `body-parser` allows us to send `POST` requests
+   - `cors` enables cross origin requests
+   - `dotenv` loads environment variables
+   - `express` a Node.js web framework
+   - `jsonwebtoken` implements JSON web tokens (duh)
+   - `mongoose` allows up to create models for our user
+   - `nodemon` automatically restarts the node application when changes are detected
+
+`Make sure you're in the server folder!`
 
 ```console
-npm i body-parser cors express mongoose nodemon
+npm i bcryptjs body-parser cors dotenv express jsonwebtoken mongoose nodemon
 ```
 
 8. Finally, inside the `package.json` file in the `server` folder, make the following changes:
@@ -110,13 +126,32 @@ npm i body-parser cors express mongoose nodemon
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.0",
     "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
     "express": "^4.18.1",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.5.2",
     "nodemon": "^2.0.19"
   }
 }
+```
+
+10. Add two additional files in the `server` folder for environment variables:
+
+`.env.example`
+
+```
+PORT = "PORT"
+CONNECTION_URL = "MONGO URL STRING"
+```
+
+`.env`
+
+```
+PORT = 5000
+CONNECTION_URL = ""
 ```
 
 Our folder structure now looks like this:
@@ -139,4 +174,6 @@ project
     |   index.js
     |   package.json
     |   package-lock.json
+    |   .env
+    |   .env.example
 ```
