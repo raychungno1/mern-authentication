@@ -1,5 +1,11 @@
 # Setup
 
+<style>
+    table {
+        width: 100%;
+    }
+</style>
+
 1. Create the following folder structure:
 
 ```
@@ -20,6 +26,7 @@ npx create-react-app ./
    - `jwt-decode` decodes JWT tokens
 
 <table><td>
+<img width="1000" height="1">
 
 `Make sure you're in the client folder!`
 

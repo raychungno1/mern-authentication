@@ -38,10 +38,7 @@ export default router;
 5. Inside `index.js` in the `server` folder, add the following:
 
 ```diff
-import express from "express";
-import bodyParser from "body-parser";
-import mongoose from "mongoose";
-import cors from "cors";
+...
 import "dotenv/config";
 
 +import userRoutes from "./routes/users.js";
@@ -55,14 +52,7 @@ app.use(cors());
 +app.use("/users", userRoutes);
 
 const CONNECTION_URL = process.env.CONNECTION_URL;
-const PORT = process.env.PORT || 5000;
-
-mongoose
-  .connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() =>
-    app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
-  )
-  .catch((e) => console.log(e.message));
+...
 ```
 
 Now lets confirm if these new routes are working.
