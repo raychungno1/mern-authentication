@@ -26,7 +26,7 @@ npx create-react-app ./
    - `jwt-decode` decodes JWT tokens
 
 <table><td>
-<img width="1000" height="1">
+<img width="100%" height="1">
 
 `Make sure you're in the client folder!`
 
