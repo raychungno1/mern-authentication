@@ -68,6 +68,6 @@ npm start
 </td></table>
 
 
-8. Using an API platform such as `Postman`, make `POST` requests to the following links, making sure you get an appropriate return message from each:
+8. Using an API platform such as `Postman`, make `POST` requests to the following links, making sure it prints a message to the console and returns an appropriate response each time you make a request:
     * `http://localhost:5000/users/signin`
     * `http://localhost:5000/users/signup`

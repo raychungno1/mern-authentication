@@ -1,11 +1,5 @@
 # Setup
 
-<style>
-    table {
-        width: 100%;
-    }
-</style>
-
 1. Create the following folder structure:
 
 ```
@@ -18,48 +12,73 @@ project
 
 ```console
 cd client
-npx create-react-app ./
+npx create-react-app ./ --template typescript
 ```
 
 3. Install the nessecary dependencies for the front end application
    - `axios` an HTTP client to make requests
    - `jwt-decode` decodes JWT tokens
+   - `react-router-dom` front end "routing"
+   - `redux` a state management container
+   - `react-redux` lets you use Redux with React
+   - `redux-thunk` thunk middleware for Redux (customize the way a `dispatch` runs)
+   - `@reduxjs/toolkit` a toolset for redux development
 
 <table><td>
-<img width="600" height="1">
 
 `Make sure you're in the client folder!`
 
 ```console
-npm i axios jwt-decode
+npm i axios jwt-decode react-redux react-router-dom redux redux-thunk @reduxjs/toolkit
 ```
+
 </td></table>
 
 4. **OPTIONAL:** to reduce clutter in the initial CRA app, I like to delete everything inside the `src` folder and replace it with just two files:
 
-```js
-// index.js
+```tsx
+// index.tsx
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 
 import App from "./App";
+import "./globals.css";
 
-ReactDOM.render(<App />, document.getElementById("root"));
+const container = document.getElementById("root");
+const root = createRoot(container!);
+root.render(<App />);
 ```
 
-```js
-// App.js
+```tsx
+// App.tsx
 import React from "react";
+import { BrowserRouter } from "react-router-dom";
 
 const App = () => {
   return (
-    <div>
+    <BrowserRouter>
       <h1>App</h1>
-    </div>
+    </BrowserRouter>
   );
 };
 
 export default App;
+```
+
+5. Inside the `package.json` file in the `client` folder, make the following change:
+
+```diff
+{
+  "name": "client",
+  "version": "0.1.0",
+  "private": true,
++ "proxy": "http://localhost:5000",
+  "dependencies": {
+    "@reduxjs/toolkit": "^1.8.5",
+    ...
+  }
+  ...
+}
 ```
 
 Our folder structure now looks like this:
@@ -70,8 +89,8 @@ project
 │   ├───node_modules
 │   ├───public
 │   ├───src
-|   |   |   App.js
-|   |   |   index.js
+|   |   |   App.tsx
+|   |   |   index.tsx
 │   |
 │   |   .gitignore
 │   |   package.json
@@ -89,23 +108,24 @@ You can now try starting the web server:
 ```console
 npm start
 ```
+
 </td></table>
 
-5.  Navigate to the `server` folder and initialize the back end
+6.  Navigate to the `server` folder and initialize the back end
 
     - Create a file called `index.js` in the server folder
     - This will be the starting point of our back end server
 
     <br />
 
-6.  Initialize a `package.json` file in the `server` folder
+7.  Initialize a `package.json` file in the `server` folder
 
 ```console
 cd server
 npm init -y
 ```
 
-7. Install the nessecary dependencies for the back end server
+8. Install the nessecary dependencies for the back end server
 
    - `bcryptjs` hashes passwords
    - `body-parser` allows us to send `POST` requests
@@ -123,9 +143,10 @@ npm init -y
 ```console
 npm i bcryptjs body-parser cors dotenv express jsonwebtoken mongoose nodemon
 ```
+
 </td></table>
 
-8. Finally, inside the `package.json` file in the `server` folder, make the following changes:
+9. Finally, inside the `package.json` file in the `server` folder, make the following changes:
 
 ```diff
 {
@@ -164,6 +185,7 @@ npm i bcryptjs body-parser cors dotenv express jsonwebtoken mongoose nodemon
 PORT = "PORT"
 CONNECTION_URL = "MONGO URL STRING"
 ```
+
 </td></table>
 
 <table><td>
@@ -174,8 +196,8 @@ CONNECTION_URL = "MONGO URL STRING"
 PORT = 5000
 CONNECTION_URL = ""
 ```
-</td></table>
 
+</td></table>
 
 Our folder structure now looks like this:
 
@@ -185,8 +207,8 @@ project
 │   ├───node_modules
 │   ├───public
 │   ├───src
-|   |   |   App.js
-|   |   |   index.js
+|   |   |   App.tsx
+|   |   |   index.tsx
 |   |
 │   |   .gitignore
 │   |   package.json

@@ -1,0 +1,11 @@
+.nav__container {
+  height: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav__title {
+  font-size: 2rem;
+  font-weight: bold;
+}

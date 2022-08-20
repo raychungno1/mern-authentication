@@ -35,9 +35,11 @@ import User from "../models/user.js";
 
 export const signin = async (req, res) => {
   res.status(200).json({ message: "Signing In!" });
+  console.log("Signing In!");
 };
 
 export const signup = async (req, res) => {
   res.status(200).json({ message: "Signing Up!" });
+  console.log("Signing Up!");
 };
 ```
