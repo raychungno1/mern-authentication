@@ -10,9 +10,10 @@ The project is current still work-in-progress.
 
 ## Features
 
----
-
-## Todo
+- Sign in with email and password
+- Sign up with email and password
+- Sign in with Google using OAuth 2.0 and [Google Cloud SDK](https://cloud.google.com/sdk)
+- Generates JWT tokens to save the logged in status of users
 
 ---
 
