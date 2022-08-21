@@ -1,0 +1,53 @@
+# MongoDB Setup
+
+This example will be hosted on MongoDB Atlas
+
+1. Naviate to the Google Cloud [website](https://console.cloud.google.com/) and login
+
+2. Click on `Select a project` in the nagivation bar, then `New Project`
+
+3. Give your project a name, then click `Create`
+
+4. Once the project is created, make sure it is selected in the navigation bar, then select `APIs & Services` > `Credentials`
+
+5. Click on `Configure Consent Screen`, select the `External` option, then `Create`
+
+6. Then, enter an app name, a user support email, and a developer contact email, then click `Save and Continue`
+
+7. Click `Save and Continue` two more times, then `Back to Dashboard`
+
+8. Now, head to the `Credentials` page on the sidebar, then click `Create Credentials` > `OAuth Client ID`
+
+9. Set the application type to `web application` and give it a name
+
+10. Under `Authorized JavaScript Origins`, add two URLs:
+
+    - `http://localhost`
+    - `http://localhost:3000`
+
+11. Under `Authorized Redirect URIs`, add the two same URLs:
+
+    - `http://localhost`
+    - `http://localhost:3000`
+
+12. Now click `Create` to generate your client ID and copy it
+
+13. Paste the connection string in the `.env` file in our `client` folder
+
+```diff
+- REACT_APP_GOOGLE_API_TOKEN = ""
++ REACT_APP_GOOGLE_API_TOKEN = "<...>.apps.googleusercontent.com"
+```
+
+14. Now, edit `App.tsx` to include this new ID:
+
+```diff
+    <BrowserRouter>
+-     <GoogleOAuthProvider clientId="">
++     <GoogleOAuthProvider
++       clientId={`${process.env.REACT_APP_GOOGLE_API_TOKEN}`}
++     >
+        <h1>App</h1>
+      </GoogleOAuthProvider>
+    </BrowserRouter>
+```

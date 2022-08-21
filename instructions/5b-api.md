@@ -12,12 +12,19 @@ project
 │   ├───node_modules
 │   ├───public
 │   ├───src
+|   |   |   App.tsx
+|   |   |   index.tsx
+|   |   |
+|   |   ├───hooks
+|   |   |   |   reduxHooks.ts
+|   |   |   |   useGetAuth.ts
+|   |   |
+|   |   ├───interfaces
+|   |   |   |   user.ts
+|   |   |
 |   |   ├───store
 |   |   |   |   authSlice.ts
 |   |   |   |   index.ts
-|   |   |
-|   |   |   App.tsx
-|   |   |   index.tsx
 |   |
 │   |   .gitignore
 │   |   package.json

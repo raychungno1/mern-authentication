@@ -1,8 +1,20 @@
 import React, { useState } from "react";
+import { IconButton, InputAdornment, TextField } from "@material-ui/core";
+import {
+  AccountCircle,
+  AddToQueue,
+  Email,
+  Visibility,
+  VisibilityOff,
+  VpnKey,
+} from "@material-ui/icons";
 import { Link, useNavigate } from "react-router-dom";
+import jwt_decode from "jwt-decode";
 
 import { signup } from "../actions/auth";
 import { useAppDispatch } from "../hooks/reduxHooks";
+import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
+import { AUTH } from "../store/authSlice";
 
 const initialState = {
   firstName: "",
@@ -16,6 +28,7 @@ const Signup = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [formData, setFormData] = useState(initialState);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e: any) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -23,73 +36,178 @@ const Signup = () => {
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    console.log(formData);
     dispatch(signup(formData, navigate));
+  };
+
+  const signinGoogle = (response: CredentialResponse) => {
+    const {
+      name,
+      email,
+      sub: id,
+      picture,
+    }: {
+      name: string;
+      email: string;
+      sub: string;
+      picture: string;
+    } = jwt_decode(`${response.credential}`);
+
+    dispatch(
+      AUTH({
+        profile: { name, email, id, picture },
+        token: response.credential,
+      })
+    );
+    navigate("/");
   };
 
   return (
     <form className="form__container" onSubmit={handleSubmit}>
-      <h3>Sign In</h3>
+      <div className="form__icon">
+        <AddToQueue fontSize="inherit" htmlColor="white" style={{ marginTop: "5"}} />
+      </div>
+      <h2 className="form__title">Sign Up</h2>
+      <p className="form__subtitle">Create an account to get started</p>
       <div className="form__2-col">
-        <div>
-          <label htmlFor="firstName">First Name</label>
-          <input
-            type="text"
+        <div className="form__input">
+          <TextField
             name="firstName"
-            id="firstName"
-            placeholder="First Name *"
             onChange={handleChange}
-            autoComplete="given-name"
+            variant="outlined"
             required
+            fullWidth
+            label="First Name"
+            type="firstName"
+            placeholder="First Name"
+            autoFocus
+            autoComplete="given-name"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <AccountCircle />
+                </InputAdornment>
+              ),
+            }}
           />
         </div>
-        <div>
-          <label htmlFor="lastName">Last Name</label>
-          <input
-            type="text"
+        <div className="form__input">
+          <TextField
             name="lastName"
-            id="lastName"
-            placeholder="Last Name *"
             onChange={handleChange}
-            autoComplete="family-name"
+            variant="outlined"
             required
+            fullWidth
+            label="Last Name"
+            type="lastName"
+            placeholder="Last Name"
+            autoComplete="family-name"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <AccountCircle />
+                </InputAdornment>
+              ),
+            }}
           />
         </div>
       </div>
-      <label htmlFor="email">Email</label>
-      <input
-        type="email"
-        name="email"
-        id="email"
-        placeholder="Email *"
-        onChange={handleChange}
-        autoComplete="email"
-        required
-      />
-      <label htmlFor="password">Password</label>
-      <input
-        type="password"
-        name="password"
-        id="password"
-        placeholder="Password *"
-        onChange={handleChange}
-        autoComplete="new-password"
-        required
-      />
-      <label htmlFor="confirmPassword">Confirm Password</label>
-      <input
-        type="confirmPassword"
-        name="confirmPassword"
-        id="confirmPassword"
-        placeholder="Confirm Password *"
-        onChange={handleChange}
-        autoComplete="new-password"
-        required
-      />
-      <input className="btn" type="submit" value="Sign In" />
-      <Link className="btn-secondary" to="/signup">
-        Don't have an account? Sign up
-      </Link>
+      <div className="form__input">
+        <TextField
+          name="email"
+          onChange={handleChange}
+          variant="outlined"
+          required
+          fullWidth
+          label="Email"
+          type="email"
+          placeholder="Email"
+          autoComplete="email"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <Email />
+              </InputAdornment>
+            ),
+          }}
+        />
+      </div>
+      <div className="form__input">
+        <TextField
+          name="password"
+          onChange={handleChange}
+          variant="outlined"
+          required
+          fullWidth
+          label="Password"
+          type={showPassword ? "text" : "password"}
+          placeholder="Password"
+          autoComplete="new-password"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <VpnKey />
+              </InputAdornment>
+            ),
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  onClick={() =>
+                    setShowPassword((prevShowPassword) => !prevShowPassword)
+                  }
+                >
+                  {showPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
+      </div>
+      <div className="form__input">
+        <TextField
+          name="confirmPassword"
+          onChange={handleChange}
+          variant="outlined"
+          required
+          fullWidth
+          label="Confirm Password"
+          type={showPassword ? "text" : "password"}
+          placeholder="Confirm Password"
+          autoComplete="new-password"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <VpnKey />
+              </InputAdornment>
+            ),
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  onClick={() =>
+                    setShowPassword((prevShowPassword) => !prevShowPassword)
+                  }
+                >
+                  {showPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
+      </div>
+      <div className="form__btn">
+        <input className="btn fullwidth" type="submit" value="Sign In" />
+      </div>
+      <p className="form__subtitle-2">Or Sign In With </p>
+      <div style={{ marginBottom: "2rem" }}>
+        <GoogleLogin
+          onSuccess={signinGoogle}
+          onError={() => console.log("Error")}
+        />
+      </div>
+      <div className="form__btn-secondary">
+        <Link className="btn-secondary" to="/signin">
+          Already have an account? Sign in
+        </Link>
+      </div>
     </form>
   );
 };

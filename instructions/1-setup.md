@@ -23,13 +23,14 @@ npx create-react-app ./ --template typescript
    - `react-redux` lets you use Redux with React
    - `redux-thunk` thunk middleware for Redux (customize the way a `dispatch` runs)
    - `@reduxjs/toolkit` a toolset for redux development
+   - `@react-oauth/google` Google OAuth2 using the Google Identity Services SDK
 
 <table><td>
 
 `Make sure you're in the client folder!`
 
 ```console
-npm i axios jwt-decode react-redux react-router-dom redux redux-thunk @reduxjs/toolkit
+npm i axios jwt-decode react-redux react-router-dom redux redux-thunk @reduxjs/toolkit @react-oauth/google
 ```
 
 </td></table>
@@ -57,7 +58,9 @@ import { BrowserRouter } from "react-router-dom";
 const App = () => {
   return (
     <BrowserRouter>
-      <h1>App</h1>
+      <GoogleOAuthProvider clientId="">
+        <h1>App</h1>
+      </GoogleOAuthProvider>
     </BrowserRouter>
   );
 };
@@ -81,6 +84,28 @@ export default App;
 }
 ```
 
+6. Add two additional files in the `client` folder for environment variables:
+
+<table><td>
+
+`.env.example`
+
+```
+REACT_APP_GOOGLE_API_TOKEN = "OAUTH CLIENT ID"
+```
+
+</td></table>
+
+<table><td>
+
+`.env`
+
+```
+REACT_APP_GOOGLE_API_TOKEN = ""
+```
+
+</td></table>
+
 Our folder structure now looks like this:
 
 ```
@@ -95,6 +120,8 @@ project
 │   |   .gitignore
 │   |   package.json
 │   |   package-lock.json
+|   |   .env
+|   |   .env.example
 │
 └───server
 ```
@@ -111,21 +138,21 @@ npm start
 
 </td></table>
 
-6.  Navigate to the `server` folder and initialize the back end
+7.  Navigate to the `server` folder and initialize the back end
 
     - Create a file called `index.js` in the server folder
     - This will be the starting point of our back end server
 
     <br />
 
-7.  Initialize a `package.json` file in the `server` folder
+8.  Initialize a `package.json` file in the `server` folder
 
 ```console
 cd server
 npm init -y
 ```
 
-8. Install the nessecary dependencies for the back end server
+9. Install the nessecary dependencies for the back end server
 
    - `bcryptjs` hashes passwords
    - `body-parser` allows us to send `POST` requests
@@ -146,7 +173,7 @@ npm i bcryptjs body-parser cors dotenv express jsonwebtoken mongoose nodemon
 
 </td></table>
 
-9. Finally, inside the `package.json` file in the `server` folder, make the following changes:
+10. Finally, inside the `package.json` file in the `server` folder, make the following changes:
 
 ```diff
 {
@@ -175,7 +202,7 @@ npm i bcryptjs body-parser cors dotenv express jsonwebtoken mongoose nodemon
 }
 ```
 
-10. Add two additional files in the `server` folder for environment variables:
+11. Add two additional files in the `server` folder for environment variables:
 
 <table><td>
 
@@ -213,6 +240,8 @@ project
 │   |   .gitignore
 │   |   package.json
 │   |   package-lock.json
+|   |   .env
+|   |   .env.example
 │
 └───server
     ├───node_modules

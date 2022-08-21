@@ -15,12 +15,16 @@ project
 |   |   ├───api
 |   |   |   |   auth.ts
 |   |   |
+|   |   ├───hooks
+|   |   |   |   reduxHooks.ts
+|   |   |   |   useGetAuth.ts
+|   |   |
+|   |   ├───interfaces
+|   |   |   |   user.ts
+|   |   |
 |   |   ├───store
 |   |   |   |   authSlice.ts
 |   |   |   |   index.ts
-|   |   |
-|   |   |   App.tsx
-|   |   |   index.tsx
 |   |
 │   |   .gitignore
 │   |   package.json

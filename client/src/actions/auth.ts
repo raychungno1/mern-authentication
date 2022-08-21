@@ -8,6 +8,7 @@ export const signin =
   async (dispatch: Dispatch<AnyAction>) => {
     try {
       const { data } = await api.signin(formData);
+      console.log(data)
       dispatch(AUTH(data));
       navigate("/");
     } catch (e) {
