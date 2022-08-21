@@ -4,8 +4,6 @@ This repository serves as a template authentication flow implementation using th
 
 It also includes instructions on how to create this workflow.
 
-The project is current still work-in-progress.
-
 ---
 
 ## Features
