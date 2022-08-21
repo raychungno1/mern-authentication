@@ -67,9 +67,43 @@ tr:nth-child(even) {
   background-color: #dddddd;
 }
 
+.home__container {
+  background-color: white;
+  border-radius: 1rem;
+  margin: 0 auto;
+  margin-top: 4rem;
+  padding: 2rem;
+  width: 100%;
+}
+
+.home__header {
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.home__header h1,
+.home__header p {
+  padding: 0;
+  margin: 0;
+}
+
+.home__footer {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.home__footer h1,
+.home__footer p {
+  padding: 0;
+  margin: 0;
+}
+
 .form__container {
   background-color: white;
-  backdrop-filter: blur(4px);
   border-radius: 1rem;
   margin: 0 auto;
   margin-top: 4rem;
@@ -118,6 +152,7 @@ tr:nth-child(even) {
   margin-bottom: 2rem;
   opacity: 0.8;
 }
+
 .form__subtitle-2 {
   width: 100%;
   text-align: center;

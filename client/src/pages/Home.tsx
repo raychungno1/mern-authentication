@@ -1,32 +1,50 @@
 import { Divider } from "@material-ui/core";
 import React from "react";
+import { Link } from "react-router-dom";
 import { useGetAuth } from "../hooks/useGetAuth";
 import { IUser } from "../interfaces/user";
 
 const Home = () => {
-  const { auth, setAuth } = useGetAuth();
+  const { auth } = useGetAuth();
 
   return (
-    <div>
+    <div className="home__container">
       {auth ? (
         <>
-          <h3>Welcome, {auth.profile.name}!</h3>
-          {auth.profile.picture ? (
-            <img src={auth.profile.picture} alt="Profile Photo" />
-          ) : (
-            <div
-              style={{
-                width: 96,
-                height: 96,
-                background: "gray",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <p>{auth.profile.name.charAt(0)}</p>
+          <div className="home__header">
+            {auth.profile.picture ? (
+              <img
+                src={auth.profile.picture}
+                alt="Profile Photo"
+                style={{
+                  width: 96,
+                  height: 96,
+                  borderRadius: "50%",
+                  objectFit: "contain",
+                }}
+              />
+            ) : (
+              <div
+                style={{
+                  width: 96,
+                  height: 96,
+                  background: "#2f9363",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  borderRadius: "50%",
+                  color: "white",
+                  fontSize: "5rem",
+                }}
+              >
+                <p>{auth.profile.name.charAt(0)}</p>
+              </div>
+            )}
+            <div>
+              <h1>{auth.profile.name}</h1>
+              <p>{auth.profile.email}</p>
             </div>
-          )}
+          </div>
           <table>
             <tbody>
               <tr>
@@ -47,7 +65,17 @@ const Home = () => {
           </p>
         </>
       ) : (
-        <h3>You are logged out.</h3>
+        <div className="home__footer">
+          <h1>You are logged out.</h1>
+          <div style={{ display: "flex", gap: "1rem" }}>
+            <Link to="/signin" className="btn">
+              Sign In
+            </Link>
+            <Link to="/signup" className="btn">
+              Sign Up
+            </Link>
+          </div>
+        </div>
       )}
     </div>
   );
