@@ -1,26 +1,32 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
+import Navbar from "./common/components/Navbar";
+import { useAppSelector } from "./common/hooks/useAppRedux";
+import Home from "./pages/Home";
+import Register from "./pages/Register.jsx";
+import Signin from "./pages/Signin";
 
-function App() {
+const App = () => {
+  const auth = useAppSelector(({ auth }) => auth);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Navbar />
+      <div className="container mx-auto">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route
+            path="/signin"
+            element={!auth ? <Signin /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/register"
+            element={!auth ? <Register /> : <Navigate to="/" />}
+          />
+        </Routes>
+      </div>
     </div>
   );
-}
+};
 
 export default App;
