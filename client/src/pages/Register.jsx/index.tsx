@@ -244,12 +244,15 @@ const Register = () => {
               }}
             />
           </div>
-          <button className="w-full" disabled={isLoading}>
+          <button
+            className={`w-full ${isLoading ? "opacity-80" : ""}`}
+            disabled={isLoading}
+          >
             <Button className="w-full text-center">
               {isLoading ? (
                 <CircularProgress size={34} sx={{ color: "grey.200" }} />
               ) : (
-                <p className="px-8 py-2">Sign In</p>
+                <p className="px-8 py-2">Sign Up</p>
               )}
             </Button>
           </button>

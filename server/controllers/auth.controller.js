@@ -70,20 +70,17 @@ export const registerController = async (req, res) => {
       <p>${process.env.CLIENT_URL}</p>
     `,
   };
-
-  return res.json({
-    message: `Email has been sent to ${email}`,
-  });
-  // sgMail
-  //   .send(emailData)
-  //   .then(() => {
-  //     return res.json({
-  //       message: `Email has been sent to ${email}`,
-  //     });
-  //   })
-  //   .catch((error) => {
-  //     return res.status(400).json({
-  //       error: errorHandler(error),
-  //     });
-  //   });
+  
+  sgMail
+    .send(emailData)
+    .then(() => {
+      return res.json({
+        message: `Email has been sent to ${email}`,
+      });
+    })
+    .catch((error) => {
+      return res.status(400).json({
+        error: errorHandler(error),
+      });
+    });
 };
