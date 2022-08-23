@@ -71,16 +71,19 @@ export const registerController = async (req, res) => {
     `,
   };
 
-  sgMail
-    .send(emailData)
-    .then(() => {
-      return res.json({
-        message: `Email has been sent to ${email}`,
-      });
-    })
-    .catch((error) => {
-      return res.status(400).json({
-        error: errorHandler(error),
-      });
-    });
+  return res.json({
+    message: `Email has been sent to ${email}`,
+  });
+  // sgMail
+  //   .send(emailData)
+  //   .then(() => {
+  //     return res.json({
+  //       message: `Email has been sent to ${email}`,
+  //     });
+  //   })
+  //   .catch((error) => {
+  //     return res.status(400).json({
+  //       error: errorHandler(error),
+  //     });
+  //   });
 };

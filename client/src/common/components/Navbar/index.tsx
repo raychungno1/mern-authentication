@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import { useAppDispatch, useAppSelector } from "../../hooks/useAppRedux";
-import { AUTH, LOGOUT } from "../../../store/auth.slice";
+import { authenticate, logout } from "../../../store/auth/auth.slice";
 
 import mongo from "../../images/mongo.svg";
 import express from "../../images/express.svg";
@@ -15,12 +15,12 @@ const Navbar = () => {
   const auth = useAppSelector(({ auth }) => auth);
 
   const handleSignout = () => {
-    dispatch(LOGOUT());
+    dispatch(logout());
   };
 
   const mockSignin = () => {
     dispatch(
-      AUTH({
+      authenticate({
         user: {
           name: "Test User",
           email: "test.user@gmail.com",
@@ -60,9 +60,13 @@ const Navbar = () => {
       </Link>
       <div>
         {auth ? (
-          <Button onClick={handleSignout}>Sign Out</Button>
+          <Button className="px-8 py-2" onClick={handleSignout}>
+            Sign Out
+          </Button>
         ) : (
-          <Button onClick={mockSignin}>Sign In</Button>
+          <Link to="/register">
+            <Button className="px-8 py-2">Sign In</Button>
+          </Link>
         )}
       </div>
     </div>
