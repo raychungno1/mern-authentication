@@ -1,15 +1,14 @@
 import React, { ChangeEvent, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FaUserCircle, FaUserPlus } from "react-icons/fa";
 import { IoMail } from "react-icons/io5";
 import { MdVpnKey, MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { BsCheckLg } from "react-icons/bs";
 
-import Button from "../../common/components/Button";
+import Button from "../common/components/Button";
 
-import { useAppDispatch, useAppSelector } from "../../common/hooks/useAppRedux";
-import { useRegisterMutation } from "../../store/auth/auth.api";
+import { useRegisterMutation } from "../store/auth/auth.api";
 import {
   CircularProgress,
   Divider,
@@ -17,7 +16,6 @@ import {
   InputAdornment,
   TextField,
 } from "@mui/material";
-import "./styles.css";
 
 const initialState = {
   firstName: "",
@@ -28,7 +26,6 @@ const initialState = {
 };
 
 const Register = () => {
-  const state = useAppSelector((state) => state);
   const [register, { isLoading }] = useRegisterMutation();
 
   const [formData, setFormData] = useState(initialState);
@@ -102,7 +99,7 @@ const Register = () => {
             {"<"} Back
           </div>
           <div className="w-24 h-24 rounded-full bg-[#9bc148] text-6xl text-white flex items-center justify-center">
-            <BsCheckLg className="ml-1" />
+            <BsCheckLg />
           </div>
           <p className="text-2xl w-full font-bold mt-4 mb-2">
             Verification Email Sent

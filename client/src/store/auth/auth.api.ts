@@ -20,7 +20,14 @@ export const api = createApi({
         body: formData,
       }),
     }),
+    activate: builder.mutation({
+      query: (token) => ({
+        url: "/activate",
+        method: "POST",
+        body: token,
+      }),
+    }),
   }),
 });
 
-export const { useRegisterMutation } = api;
+export const { useRegisterMutation, useActivateMutation } = api;

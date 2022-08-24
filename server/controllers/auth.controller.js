@@ -37,7 +37,7 @@ export const registerController = async (req, res) => {
   const user = await User.findOne({ email });
   if (user) {
     return res.status(400).json({
-      error: "Email is taken",
+      error: "Email is taken.",
     });
   }
 
@@ -63,7 +63,7 @@ export const registerController = async (req, res) => {
     html: `
       <h1>Welcome, ${name}!</h1>
       <h2>Click this link to activate your account.</h2>
-      <p>${process.env.CLIENT_URL}/users/activate/${token}</p>
+      <p>${process.env.CLIENT_URL}/user/activate/${token}</p>
       <hr />
       <p>Your link is active for 1 hour. After that, you will need to resend the verification email.</p>
       <p>This email contains sensitive information.</p>
@@ -75,7 +75,7 @@ export const registerController = async (req, res) => {
     .send(emailData)
     .then(() => {
       return res.json({
-        message: `Email has been sent to ${email}`,
+        message: `Email has been sent to ${email}.`,
       });
     })
     .catch((error) => {
@@ -92,7 +92,7 @@ export const activateController = async (req, res) => {
 
   if (!verificationToken) {
     return res.status(400).json({
-      error: "No token provided.",
+      error: "Empty link. Signup again.",
     });
   }
 
@@ -101,7 +101,6 @@ export const activateController = async (req, res) => {
       verificationToken,
       process.env.JWT_ACCT_ACTV_SECRET
     );
-    console.log("VERIFIED", name, email, password);
 
     if (name && email && password) {
       // Ensure user doesn't exist
@@ -112,6 +111,7 @@ export const activateController = async (req, res) => {
         });
       }
 
+      // const user = { name: "Ray", email: "ray@gmail.com", _id: "1" };
       const user = await User.create({ name, email, password });
 
       // Generate token for user session
@@ -136,18 +136,18 @@ export const activateController = async (req, res) => {
       });
     } else {
       return res.status(400).json({
-        error: "Invalid token.",
+        error: "Invalid link. Signup again.",
       });
     }
   } catch (error) {
     if (error.name === "TokenExpiredError") {
       return res.status(401).json({
-        error: "Expired token.",
+        error: "Expired link. Signup again.",
       });
     }
 
     return res.status(401).json({
-      error: "Invalid token.",
+      error: "Invalid link. Signup again.",
     });
   }
 };
