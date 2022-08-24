@@ -1,9 +1,20 @@
 import express from "express";
-import { registerController } from "../controllers/auth.controller.js"
+import {
+  activateController,
+  registerController,
+} from "../controllers/auth.controller.js";
 
-const router = express.Router()
+import {
+  validRegister,
+  validLogin,
+  validForgotPassword,
+  validResetPassword,
+} from "../validator/auth.validator.js";
+
+const router = express.Router();
 
 // POST endpoint to register user
-router.post("/register", registerController)
+router.post("/register", validRegister, registerController);
+router.post("/activate", activateController);
 
-export default router
+export default router;

@@ -19,7 +19,7 @@ config({
 // Config Send Grid API
 sgMail.setApiKey(process.env.MAIL_KEY);
 
-// This route generates a jwt token from the user info
+// Generates a jwt token from the user info
 // And sends a verification email to the user
 export const registerController = async (req, res) => {
   const { name, email, password } = req.body;
@@ -34,12 +34,12 @@ export const registerController = async (req, res) => {
   }
 
   // Ensure user doesn't exist
-  User.findOne({ email }).exec((err, user) => {
-    if (user)
-      return res.status(400).json({
-        error: "Email is taken",
-      });
-  });
+  const user = await User.findOne({ email });
+  if (user) {
+    return res.status(400).json({
+      error: "Email is taken",
+    });
+  }
 
   // Generate token
   const hashedPassword = await User.encryptPassword(password);
@@ -70,7 +70,7 @@ export const registerController = async (req, res) => {
       <p>${process.env.CLIENT_URL}</p>
     `,
   };
-  
+
   sgMail
     .send(emailData)
     .then(() => {
@@ -83,4 +83,71 @@ export const registerController = async (req, res) => {
         error: errorHandler(error),
       });
     });
+};
+
+// Verifies a jwt token from the verification email
+// And creates an account for the user, sending a JWT token
+export const activateController = async (req, res) => {
+  const { token: verificationToken } = req.body;
+
+  if (!verificationToken) {
+    return res.status(400).json({
+      error: "No token provided.",
+    });
+  }
+
+  try {
+    const { name, email, password } = jwt.verify(
+      verificationToken,
+      process.env.JWT_ACCT_ACTV_SECRET
+    );
+    console.log("VERIFIED", name, email, password);
+
+    if (name && email && password) {
+      // Ensure user doesn't exist
+      const existingUser = await User.findOne({ email });
+      if (existingUser) {
+        return res.status(400).json({
+          error: "Account already activated.",
+        });
+      }
+
+      const user = await User.create({ name, email, password });
+
+      // Generate token for user session
+      const token = jwt.sign(
+        { email: user.email, id: user._id },
+        process.env.JWT_ACCT_ACTV_SECRET,
+        {
+          expiresIn: "2h",
+        }
+      );
+
+      return res.status(200).json({
+        success: true,
+        message: "Signup successful!",
+        user: {
+          name: user.name,
+          email: user.email,
+          role: user.role,
+          picture: user.picture,
+        },
+        token,
+      });
+    } else {
+      return res.status(400).json({
+        error: "Invalid token.",
+      });
+    }
+  } catch (error) {
+    if (error.name === "TokenExpiredError") {
+      return res.status(401).json({
+        error: "Expired token.",
+      });
+    }
+
+    return res.status(401).json({
+      error: "Invalid token.",
+    });
+  }
 };

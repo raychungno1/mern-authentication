@@ -50,15 +50,23 @@ const Register = () => {
     if (firstName && lastName && email && password && confirmPassword) {
       if (password === confirmPassword) {
         try {
-          const data = await register(formData).unwrap();
+          const data = await register({
+            name: `${firstName} ${lastName}`,
+            email,
+            password,
+          }).unwrap();
           toast.success(data.message, {
             position: toast.POSITION.BOTTOM_RIGHT,
           });
           setSuccess((prev) => !prev);
-        } catch (error) {
-          toast.error("There was an error registering. Try again.", {
-            position: toast.POSITION.BOTTOM_RIGHT,
-          });
+        } catch (error: any) {
+          toast.error(
+            error.data.error || "There was an error registering. Try again.",
+            {
+              toastId: "server-error",
+              position: toast.POSITION.BOTTOM_RIGHT,
+            }
+          );
         }
       } else {
         toast.error("Passwords don't match.", {
@@ -248,9 +256,13 @@ const Register = () => {
             className={`w-full ${isLoading ? "opacity-80" : ""}`}
             disabled={isLoading}
           >
-            <Button className="w-full text-center">
+            <Button className="w-full text-center flex items-center justify-center">
               {isLoading ? (
-                <CircularProgress size={34} sx={{ color: "grey.200" }} />
+                <CircularProgress
+                  className="my-1"
+                  size={32}
+                  sx={{ color: "grey.200" }}
+                />
               ) : (
                 <p className="px-8 py-2">Sign Up</p>
               )}

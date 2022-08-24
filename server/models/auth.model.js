@@ -39,7 +39,6 @@ const userSchema = new mongoose.Schema(
 
 userSchema.statics = {
   encryptPassword: function (password) {
-    console.log("Hashing PW");
     return bcrypt.hash(password, 12);
   },
 };
