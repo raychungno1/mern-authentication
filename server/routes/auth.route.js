@@ -1,7 +1,10 @@
 import express from "express";
 import {
   activateController,
+  forgetController,
+  loginController,
   registerController,
+  resetController,
 } from "../controllers/auth.controller.js";
 
 import {
@@ -13,8 +16,11 @@ import {
 
 const router = express.Router();
 
-// POST endpoint to register user
 router.post("/register", validRegister, registerController);
 router.post("/activate", activateController);
+
+router.post("/login", validLogin, loginController);
+router.put("/password/forget", validForgotPassword, forgetController);
+router.put("/password/reset", validResetPassword, resetController);
 
 export default router;

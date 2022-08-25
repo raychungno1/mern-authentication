@@ -27,7 +27,34 @@ export const api = createApi({
         body: token,
       }),
     }),
+    login: builder.mutation({
+      query: (formData) => ({
+        url: "/login",
+        method: "POST",
+        body: formData,
+      }),
+    }),
+    forgetPassword: builder.mutation({
+      query: (email) => ({
+        url: "/password/forget",
+        method: "PUT",
+        body: email,
+      }),
+    }),
+    resetPassword: builder.mutation({
+      query: (formData) => ({
+        url: "/password/reset",
+        method: "PUT",
+        body: formData,
+      }),
+    }),
   }),
 });
 
-export const { useRegisterMutation, useActivateMutation } = api;
+export const {
+  useRegisterMutation,
+  useActivateMutation,
+  useLoginMutation,
+  useForgetPasswordMutation,
+  useResetPasswordMutation,
+} = api;

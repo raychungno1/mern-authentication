@@ -117,7 +117,7 @@ export const activateController = async (req, res) => {
       // Generate token for user session
       const token = jwt.sign(
         { email: user.email, id: user._id },
-        process.env.JWT_ACCT_ACTV_SECRET,
+        process.env.JWT_SECRET,
         {
           expiresIn: "2h",
         }
@@ -127,6 +127,7 @@ export const activateController = async (req, res) => {
         success: true,
         message: "Signup successful!",
         user: {
+          id: user._id,
           name: user.name,
           email: user.email,
           role: user.role,
@@ -148,6 +149,177 @@ export const activateController = async (req, res) => {
 
     return res.status(401).json({
       error: "Invalid link. Signup again.",
+    });
+  }
+};
+
+export const loginController = async (req, res) => {
+  const { email, password } = req.body;
+
+  // Validate request
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const errorMsg = errors.array().map((error) => error.msg)[0];
+    return res.status(422).json({
+      error: errorMsg,
+    });
+  }
+
+  try {
+    const existingUser = await User.findOne({ email });
+
+    if (!existingUser) {
+      return res
+        .status(404)
+        .json({ error: "User with this email does not exist." });
+    }
+
+    const passwordCorrect = await existingUser.authenticate(password);
+
+    if (!passwordCorrect) {
+      return res
+        .status(400)
+        .json({ error: "Email and password do not match." });
+    }
+
+    // Generate token for user session
+    const token = jwt.sign(
+      { email: existingUser.email, id: existingUser._id },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "2h",
+      }
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "Login successful!",
+      user: {
+        id: existingUser._id,
+        name: existingUser.name,
+        email: existingUser.email,
+        role: existingUser.role,
+        picture: existingUser.picture,
+      },
+      token,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+};
+
+export const forgetController = async (req, res) => {
+  const { email } = req.body;
+
+  // Validate request
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const errorMsg = errors.array().map((error) => error.msg)[0];
+    return res.status(422).json({
+      error: errorMsg,
+    });
+  }
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ error: "User with this email does not exist." });
+    }
+
+    // Generate token for password reset
+    const token = jwt.sign(
+      { email: user.email, id: user._id },
+      process.env.JWT_RESET_PW,
+      {
+        expiresIn: "10m",
+      }
+    );
+
+    // Sending email
+    const emailData = {
+      from: process.env.EMAIL_FROM,
+      to: email,
+      subject: "Password Reset Link",
+      html: `
+      <h1>Hi, ${user.name}</h1>
+      <h2>Click this link to reset your password.</h2>
+      <p>${process.env.CLIENT_URL}/user/password/reset/${token}</p>
+      <hr />
+      <p>Your link is active for 10 minutes. After that, you will need to resend the another email.</p>
+      <p>This email contains sensitive information.</p>
+      <p>${process.env.CLIENT_URL}</p>
+    `,
+    };
+
+    await user.updateOne({ resetPasswordLink: token });
+
+    sgMail
+      .send(emailData)
+      .then(() => {
+        return res.json({
+          message: `Email has been sent to ${email}.`,
+        });
+      })
+      .catch((error) => {
+        return res.status(400).json({
+          error: error.message,
+        });
+      });
+  } catch (error) {
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+};
+
+export const resetController = async (req, res) => {
+  const { token: resetPasswordLink, password: newPassword } = req.body;
+
+  // Validate request
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const errorMsg = errors.array().map((error) => error.msg)[0];
+    return res.status(422).json({
+      error: errorMsg,
+    });
+  }
+
+  try {
+    jwt.verify(resetPasswordLink, process.env.JWT_RESET_PW);
+    console.log(resetPasswordLink);
+    const user = await User.findOne({ resetPasswordLink });
+    if (!user) {
+      return res.status(400).json({
+        error: "Something went wrong. Request again.",
+      });
+    }
+
+    const passwordSame = await user.authenticate(newPassword);
+    if (passwordSame) {
+      return res.status(400).json({ error: "Cannot use previous password." });
+    }
+
+    try {
+      user.password = await User.encryptPassword(newPassword);
+      user.resetPasswordLink = "";
+      await user.save();
+      return res.status(200).json({ message: "Password reset successful." });
+    } catch (error) {
+      return res.status(400).json({
+        error: "Error reseting user password.",
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    if (error.name === "TokenExpiredError") {
+      return res.status(401).json({
+        error: "Expired link. Request again.",
+      });
+    }
+
+    return res.status(401).json({
+      error: "Invalid link. Request again.",
     });
   }
 };

@@ -64,7 +64,7 @@ const Navbar = () => {
             Sign Out
           </Button>
         ) : (
-          <Link to="/register">
+          <Link to="/signin">
             <Button className="px-8 py-2">Sign In</Button>
           </Link>
         )}

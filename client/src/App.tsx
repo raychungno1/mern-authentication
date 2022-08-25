@@ -9,6 +9,9 @@ import Register from "./pages/Register";
 
 import "react-toastify/dist/ReactToastify.css";
 import Activate from "./pages/Activate";
+import Login from "./pages/Login";
+import Forget from "./pages/Forget";
+import Reset from "./pages/Reset";
 
 const App = () => {
   const auth = useAppSelector(({ auth }) => auth);
@@ -20,15 +23,23 @@ const App = () => {
       <div className="container mx-auto">
         <Routes>
           <Route path="/" element={<Home />} />
-          {/* <Route
-            path="/signin"
-            element={!auth ? <Signin /> : <Navigate to="/" />}
-          /> */}
           <Route
             path="/register"
             element={!auth ? <Register /> : <Navigate to="/" />}
           />
           <Route path="/user/activate/:token" element={<Activate />} />
+          <Route
+            path="/signin"
+            element={!auth ? <Login /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/user/password/forget"
+            element={!auth ? <Forget /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/user/password/reset/:token"
+            element={!auth ? <Reset /> : <Navigate to="/" />}
+          />
         </Routes>
       </div>
     </div>

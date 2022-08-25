@@ -24,15 +24,7 @@ export const validRegister = [
 export const validLogin = [
   check("email").isEmail().withMessage("Email address invalid."),
 
-  check("password")
-    .notEmpty()
-    .withMessage("Password is required.")
-
-    .isLength({ min: 6 })
-    .withMessage("Password must contain at least 6 characters.")
-
-    .matches(/\d/)
-    .withMessage("Password must contain a number."),
+  check("password").notEmpty().withMessage("Password is required."),
 ];
 
 export const validForgotPassword = [
