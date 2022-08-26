@@ -4,10 +4,11 @@ import { toast } from "react-toastify";
 import { FaUserShield } from "react-icons/fa";
 import { IoMail } from "react-icons/io5";
 import { MdVpnKey, MdVisibility, MdVisibilityOff } from "react-icons/md";
-
-import Button from "../common/components/Button";
-
-import { useLoginMutation } from "../store/auth/auth.api";
+import {
+  CredentialResponse,
+  GoogleLogin,
+  googleLogout,
+} from "@react-oauth/google";
 import {
   CircularProgress,
   Divider,
@@ -15,6 +16,14 @@ import {
   InputAdornment,
   TextField,
 } from "@mui/material";
+import jwt_decode from "jwt-decode";
+
+import Button from "../common/components/Button";
+
+import {
+  useGoogleLoginMutation,
+  useLoginMutation,
+} from "../store/auth/auth.api";
 import { authenticate } from "../store/auth/auth.slice";
 import { useAppDispatch } from "../common/hooks/useAppRedux";
 
@@ -25,7 +34,10 @@ const initialState = {
 
 const Login = () => {
   const dispatch = useAppDispatch();
-  const [login, { isLoading }] = useLoginMutation();
+  const [login, { isLoading: isLoginLoading }] = useLoginMutation();
+  const [googleLogin, { isLoading: isGoogleLoading }] =
+    useGoogleLoginMutation();
+  const isLoading = isLoginLoading || isGoogleLoading;
 
   const [formData, setFormData] = useState(initialState);
   const { email, password } = formData;
@@ -66,6 +78,22 @@ const Login = () => {
         </div>,
         { toastId: "missing-data", position: toast.POSITION.BOTTOM_RIGHT }
       );
+    }
+  };
+
+  const handleGoogleLogin = async (response: CredentialResponse) => {
+    try {
+      const data = await googleLogin({
+        credential: response.credential,
+      }).unwrap();
+      toast.success(data.message, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+      dispatch(authenticate({ token: data.token, user: data.user }));
+    } catch (error: any) {
+      toast.error("Google login error.", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
     }
   };
 
@@ -146,19 +174,13 @@ const Login = () => {
             )}
           </Button>
         </button>
-        {/* <div className="w-full my-6">
-            <Divider>Or Sign In With</Divider>
-          </div>
-          <Button className="w-full text-center">
-            <p className="px-8 py-2">Google</p>
-          </Button> */}
-        {/* <p className="form__subtitle-2">Or Sign In With </p>
-        <div style={{ marginBottom: "2rem" }}>
-          <GoogleLogin
-            onSuccess={signinGoogle}
-            onError={() => console.log("Error")}
-          />
-        </div> */}
+        <div className="w-full my-6">
+          <Divider>Or Sign In With</Divider>
+        </div>
+        <GoogleLogin
+          onSuccess={handleGoogleLogin}
+          onError={() => console.log("Error")}
+        />
         <div className="w-full flex flex-col lg:flex-row items-center justify-between">
           <Link
             className="ml-auto lg:ml-0 mr-0 lg:mr-auto uppercase text-xs mt-8 hover:underline"

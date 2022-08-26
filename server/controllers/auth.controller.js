@@ -1,6 +1,5 @@
 import User from "../models/auth.model.js";
 import expressJwt from "express-jwt";
-import _ from "lodash";
 import { OAuth2Client } from "google-auth-library";
 import fetch from "node-fetch";
 import { validationResult } from "express-validator";
@@ -111,7 +110,6 @@ export const activateController = async (req, res) => {
         });
       }
 
-      // const user = { name: "Ray", email: "ray@gmail.com", _id: "1" };
       const user = await User.create({ name, email, password });
 
       // Generate token for user session
@@ -153,6 +151,8 @@ export const activateController = async (req, res) => {
   }
 };
 
+// Verifies the user's credentials
+// Then generates a jwt token to begin a user session
 export const loginController = async (req, res) => {
   const { email, password } = req.body;
 
@@ -208,6 +208,8 @@ export const loginController = async (req, res) => {
   }
 };
 
+// Generates a jwt token for password reset
+// And sends a password reset email to the user
 export const forgetController = async (req, res) => {
   const { email } = req.body;
 
@@ -273,6 +275,8 @@ export const forgetController = async (req, res) => {
   }
 };
 
+// Verifies a jwt token from the password reset email
+// And updates the password for the user
 export const resetController = async (req, res) => {
   const { token: resetPasswordLink, password: newPassword } = req.body;
 
@@ -320,6 +324,62 @@ export const resetController = async (req, res) => {
 
     return res.status(401).json({
       error: "Invalid link. Request again.",
+    });
+  }
+};
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT);
+export const googleController = async (req, res) => {
+  const { credential } = req.body;
+
+  try {
+    // Verify token
+    const ticket = await client.verifyIdToken({
+      idToken: credential,
+      audience: process.env.GOOGLE_CLIENT,
+    });
+
+    const { email, name, picture, email_verified } = ticket.getPayload();
+
+    if (!email_verified) {
+      return res.status(401).json({
+        error: "Email not verified.",
+      });
+    }
+
+    let user = await User.findOne({ email });
+
+    // If user does not exist, create account
+    if (!user) {
+      const password = await User.encryptPassword(process.env.JWT_SECRET + email);
+      user = await User.create({ name, email, password, picture });
+    }
+
+    // Generate token for user session
+    const token = jwt.sign(
+      { email: user.email, id: user._id },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "2h",
+      }
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "Login successful!",
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        picture: user.picture,
+      },
+      token,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(401).json({
+      error: "Google login failed.",
     });
   }
 };

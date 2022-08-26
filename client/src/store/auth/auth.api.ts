@@ -48,6 +48,13 @@ export const api = createApi({
         body: formData,
       }),
     }),
+    googleLogin: builder.mutation({
+      query: (credential) => ({
+        url: "/googlelogin",
+        method: "POST",
+        body: credential,
+      }),
+    }),
   }),
 });
 
@@ -57,4 +64,5 @@ export const {
   useLoginMutation,
   useForgetPasswordMutation,
   useResetPasswordMutation,
+  useGoogleLoginMutation,
 } = api;

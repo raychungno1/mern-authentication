@@ -7,13 +7,16 @@ import App from "./App";
 import store from "./store/store";
 
 import "./common/globals.css";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const root = createRoot(document.getElementById("root") as HTMLElement);
 root.render(
   // <React.StrictMode>
   <BrowserRouter>
     <Provider store={store}>
-      <App />
+      <GoogleOAuthProvider clientId={`${process.env.REACT_APP_GOOGLE_CLIENT}`}>
+        <App />
+      </GoogleOAuthProvider>
     </Provider>
   </BrowserRouter>
   // </React.StrictMode>

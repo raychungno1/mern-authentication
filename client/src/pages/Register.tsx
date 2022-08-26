@@ -3,12 +3,12 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FaUserCircle, FaUserPlus } from "react-icons/fa";
 import { IoMail } from "react-icons/io5";
-import { MdVpnKey, MdVisibility, MdVisibilityOff, MdMarkEmailRead } from "react-icons/md";
-import { BsCheckLg } from "react-icons/bs";
-
-import Button from "../common/components/Button";
-
-import { useRegisterMutation } from "../store/auth/auth.api";
+import {
+  MdVpnKey,
+  MdVisibility,
+  MdVisibilityOff,
+  MdMarkEmailRead,
+} from "react-icons/md";
 import {
   CircularProgress,
   Divider,
@@ -16,6 +16,16 @@ import {
   InputAdornment,
   TextField,
 } from "@mui/material";
+import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
+
+import Button from "../common/components/Button";
+
+import {
+  useGoogleLoginMutation,
+  useRegisterMutation,
+} from "../store/auth/auth.api";
+import { authenticate } from "../store/auth/auth.slice";
+import { useAppDispatch } from "../common/hooks/useAppRedux";
 
 const initialState = {
   firstName: "",
@@ -26,7 +36,11 @@ const initialState = {
 };
 
 const Register = () => {
-  const [register, { isLoading }] = useRegisterMutation();
+  const dispatch = useAppDispatch();
+  const [register, { isLoading: isRegisterLoading }] = useRegisterMutation();
+  const [googleLogin, { isLoading: isGoogleLoading }] =
+    useGoogleLoginMutation();
+  const isLoading = isRegisterLoading || isGoogleLoading;
 
   const [formData, setFormData] = useState(initialState);
   const { firstName, lastName, email, password, confirmPassword } = formData;
@@ -85,6 +99,22 @@ const Register = () => {
         </div>,
         { toastId: "missing-data", position: toast.POSITION.BOTTOM_RIGHT }
       );
+    }
+  };
+
+  const handleGoogleLogin = async (response: CredentialResponse) => {
+    try {
+      const data = await googleLogin({
+        credential: response.credential,
+      }).unwrap();
+      toast.success(data.message, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+      dispatch(authenticate({ token: data.token, user: data.user }));
+    } catch (error: any) {
+      toast.error("Google login error.", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
     }
   };
 
@@ -265,19 +295,13 @@ const Register = () => {
               )}
             </Button>
           </button>
-          {/* <div className="w-full my-6">
+          <div className="w-full my-6">
             <Divider>Or Sign In With</Divider>
           </div>
-          <Button className="w-full text-center">
-            <p className="px-8 py-2">Google</p>
-          </Button> */}
-          {/* <p className="form__subtitle-2">Or Sign In With </p>
-        <div style={{ marginBottom: "2rem" }}>
           <GoogleLogin
-            onSuccess={signinGoogle}
+            onSuccess={handleGoogleLogin}
             onError={() => console.log("Error")}
           />
-        </div> */}
           <Link
             className="ml-auto text-right uppercase text-xs mt-8 hover:underline"
             to="/signin"

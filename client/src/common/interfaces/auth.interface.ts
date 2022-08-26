@@ -1,11 +1,11 @@
 export interface User {
-  name: String;
-  email: String;
-  picture?: String;
-  role?: String;
+  name: string;
+  email: string;
+  picture?: string;
+  role?: string;
 }
 
 export interface AuthState {
   user: User;
-  token: String;
+  token: string;
 }

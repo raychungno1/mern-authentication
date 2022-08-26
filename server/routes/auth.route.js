@@ -2,6 +2,7 @@ import express from "express";
 import {
   activateController,
   forgetController,
+  googleController,
   loginController,
   registerController,
   resetController,
@@ -23,4 +24,5 @@ router.post("/login", validLogin, loginController);
 router.put("/password/forget", validForgotPassword, forgetController);
 router.put("/password/reset", validResetPassword, resetController);
 
+router.post("/googlelogin", googleController);
 export default router;
