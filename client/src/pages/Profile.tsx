@@ -43,7 +43,7 @@ const Profile = () => {
           dispatch(authenticate({ token: `${auth?.token}`, user: data.user }));
         } catch (error: any) {
           toast.error(
-            error.data.error || "There was an error registering. Try again.",
+            error.data.error || "There was an error updating. Try again.",
             {
               position: toast.POSITION.BOTTOM_RIGHT,
             }

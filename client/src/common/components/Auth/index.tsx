@@ -70,8 +70,9 @@ const Auth = ({ type, setSuccess }: IProps) => {
         });
         dispatch(authenticate({ token: data.token, user: data.user }));
       } catch (error: any) {
+        console.log(error);
         toast.error(
-          error.data.error || "There was an error registering. Try again.",
+          error.data.error || "There was an error logging in. Try again.",
           {
             position: toast.POSITION.BOTTOM_RIGHT,
           }
