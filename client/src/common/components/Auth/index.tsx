@@ -284,7 +284,7 @@ const Auth = ({ type, setSuccess }: IProps) => {
           onError={() => console.log("Error")}
           type="icon"
         />
-        <FacebookLogin
+        {/* <FacebookLogin
           appId={`${process.env.REACT_APP_FACEBOOK_CLIENT}`}
           fields="name,email,picture"
           callback={handleFacebookLogin}
@@ -298,7 +298,7 @@ const Auth = ({ type, setSuccess }: IProps) => {
               <FaFacebookF className="mr-[2px]" />
             </button>
           )}
-        />
+        /> */}
       </div>
     </>
   );

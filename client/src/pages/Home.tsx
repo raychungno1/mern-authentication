@@ -5,7 +5,7 @@ import {
   FaUserPlus,
   FaUserShield,
 } from "react-icons/fa";
-import { MdPassword } from "react-icons/md";
+import { MdMarkEmailRead, MdPassword } from "react-icons/md";
 import { SiJsonwebtokens } from "react-icons/si";
 import { Link } from "react-router-dom";
 import Button from "../common/components/Button";
@@ -85,10 +85,15 @@ const Home = () => {
             desc="Sign in with Google using the Google Identity Services SDK."
           />
           <FeatureCard
+            icon={<MdMarkEmailRead />}
+            title="SendGrid"
+            desc="Verification & activation emails sent through SendGrid."
+          />
+          {/* <FeatureCard
             icon={<FaFacebookF />}
             title="Facebook OAuth"
             desc="Sign in with Facebook using Meta for Developers Facebook SDK."
-          />
+          /> */}
         </div>
       </div>
     </div>

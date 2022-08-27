@@ -16,5 +16,4 @@ This repository is currently still **work in progress**.
 - Password salting & hashing w/ bcrypt
   - [Useful Article](https://heynode.com/blog/2020-04/salt-and-hash-passwords-bcrypt/)
 - Sign in with Google using Google Identity Services OAuth 2.0
-- Sign in with Facebook using Meta for Developers
 ---
