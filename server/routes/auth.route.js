@@ -1,6 +1,7 @@
 import express from "express";
 import {
   activateController,
+  facebookController,
   forgetController,
   googleController,
   loginController,
@@ -25,4 +26,5 @@ router.put("/password/forget", validForgotPassword, forgetController);
 router.put("/password/reset", validResetPassword, resetController);
 
 router.post("/googlelogin", googleController);
+router.post("/facebooklogin", facebookController);
 export default router;

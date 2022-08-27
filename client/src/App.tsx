@@ -1,17 +1,17 @@
 import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import Navbar from "./common/components/Navbar";
-import { useAppSelector } from "./common/hooks/useAppRedux";
+
 import Home from "./pages/Home";
 import Register from "./pages/Register";
-// import Signin from "./pages/Signin";
-
-import "react-toastify/dist/ReactToastify.css";
 import Activate from "./pages/Activate";
 import Login from "./pages/Login";
 import Forget from "./pages/Forget";
 import Reset from "./pages/Reset";
+import Navbar from "./common/components/Navbar";
+
+import { useAppSelector } from "./common/hooks/useAppRedux";
+import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
   const auth = useAppSelector(({ auth }) => auth);

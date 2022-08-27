@@ -18,6 +18,7 @@ import {
   useRegisterMutation,
   useResetPasswordMutation,
 } from "../store/auth/auth.api";
+import Input from "../common/components/Input";
 
 const initialState = {
   password: "",
@@ -111,73 +112,29 @@ const Reset = () => {
             Your new password must be different from previous used passwords.
           </p>
           <div className="w-full mb-8">
-            <TextField
-              name="password"
+            <Input
+              label="Password"
+              type="password"
+              autoComplete="new-password"
+              startAdornment={<MdVpnKey className="text-2xl text-black" />}
               value={password}
               onChange={handleChange}
-              variant="outlined"
-              fullWidth
-              label="Password"
-              type={showPassword ? "text" : "password"}
-              placeholder="Password"
-              autoComplete="new-password"
-              disabled={isLoading}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <MdVpnKey className="text-2xl text-black" />
-                  </InputAdornment>
-                ),
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={() =>
-                        setShowPassword((prevShowPassword) => !prevShowPassword)
-                      }
-                    >
-                      {showPassword ? <MdVisibility /> : <MdVisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
+              showPassword={showPassword}
+              setShowPassword={setShowPassword}
+              isLoading={isLoading}
             />
           </div>
           <div className="w-full mb-8">
-            <TextField
-              name="confirmPassword"
+            <Input
+              label="Confirm Password"
+              type="confirmPassword"
+              autoComplete="new-password"
+              startAdornment={<MdVpnKey className="text-2xl text-black" />}
               value={confirmPassword}
               onChange={handleChange}
-              variant="outlined"
-              fullWidth
-              label="Confirm Password"
-              type={showConfirmPassword ? "text" : "password"}
-              placeholder="Confirm Password"
-              autoComplete="new-password"
-              disabled={isLoading}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <MdVpnKey className="text-2xl text-black" />
-                  </InputAdornment>
-                ),
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={() =>
-                        setShowConfirmPassword(
-                          (prevShowComfirmPassword) => !prevShowComfirmPassword
-                        )
-                      }
-                    >
-                      {showConfirmPassword ? (
-                        <MdVisibility />
-                      ) : (
-                        <MdVisibilityOff />
-                      )}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
+              showPassword={showConfirmPassword}
+              setShowPassword={setShowConfirmPassword}
+              isLoading={isLoading}
             />
           </div>
           <button

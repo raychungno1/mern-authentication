@@ -55,6 +55,13 @@ export const api = createApi({
         body: credential,
       }),
     }),
+    facebookLogin: builder.mutation({
+      query: (formData) => ({
+        url: "/facebooklogin",
+        method: "POST",
+        body: formData,
+      }),
+    }),
   }),
 });
 
@@ -65,4 +72,5 @@ export const {
   useForgetPasswordMutation,
   useResetPasswordMutation,
   useGoogleLoginMutation,
+  useFacebookLoginMutation,
 } = api;

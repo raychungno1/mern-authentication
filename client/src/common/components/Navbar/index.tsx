@@ -2,32 +2,22 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import { useAppDispatch, useAppSelector } from "../../hooks/useAppRedux";
-import { authenticate, logout } from "../../../store/auth/auth.slice";
+import { logout } from "../../../store/auth/auth.slice";
 
 import mongo from "../../images/mongo.svg";
 import express from "../../images/express.svg";
 import react from "../../images/react.svg";
 import node from "../../images/node.svg";
 import Button from "../Button";
+import { googleLogout } from "@react-oauth/google";
 
 const Navbar = () => {
   const dispatch = useAppDispatch();
   const auth = useAppSelector(({ auth }) => auth);
 
   const handleSignout = () => {
+    googleLogout();
     dispatch(logout());
-  };
-
-  const mockSignin = () => {
-    dispatch(
-      authenticate({
-        user: {
-          name: "Test User",
-          email: "test.user@gmail.com",
-        },
-        token: "test-token-123",
-      })
-    );
   };
 
   return (

@@ -14,6 +14,7 @@ import { CircularProgress, InputAdornment, TextField } from "@mui/material";
 import { authenticate } from "../store/auth/auth.slice";
 import { useAppDispatch } from "../common/hooks/useAppRedux";
 import { MdMarkEmailRead } from "react-icons/md";
+import Input from "../common/components/Input";
 
 const initialState = {
   email: "",
@@ -87,24 +88,15 @@ const Forget = () => {
             you a link to reset your password.
           </p>
           <div className="w-full mb-8">
-            <TextField
-              name="email"
-              value={email}
-              onChange={handleChange}
-              variant="outlined"
-              fullWidth
+            <Input
               label="Email"
               type="email"
-              placeholder="Email"
               autoComplete="email"
-              disabled={isLoading}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <IoMail className="text-2xl text-black" />
-                  </InputAdornment>
-                ),
-              }}
+              startAdornment={<IoMail className="text-2xl text-black" />}
+              value={email}
+              onChange={handleChange}
+              isLoading={isLoading}
+              autoFocus
             />
           </div>
           <button

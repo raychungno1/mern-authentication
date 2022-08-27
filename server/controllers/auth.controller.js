@@ -6,6 +6,7 @@ import { validationResult } from "express-validator";
 import jwt from "jsonwebtoken";
 import sgMail from "@sendgrid/mail";
 import { config } from "dotenv";
+import axios from "axios";
 
 // Custom MongoDB error handler to get useful error messages
 import { errorHandler } from "../helpers/dbErrorHandling.js";
@@ -351,7 +352,9 @@ export const googleController = async (req, res) => {
 
     // If user does not exist, create account
     if (!user) {
-      const password = await User.encryptPassword(process.env.JWT_SECRET + email);
+      const password = await User.encryptPassword(
+        process.env.JWT_SECRET + email
+      );
       user = await User.create({ name, email, password, picture });
     }
 
@@ -380,6 +383,60 @@ export const googleController = async (req, res) => {
     console.log(error);
     return res.status(401).json({
       error: "Google login failed.",
+    });
+  }
+};
+
+export const facebookController = async (req, res) => {
+  const { userID, accessToken } = req.body;
+  console.log(userID, accessToken);
+
+  try {
+    const url = `https://graph.facebook.com/v14.0/${userID}?fields=id,name,email,picture&access_token=${accessToken}`;
+    const { data } = await axios.get(url);
+    const {
+      name,
+      email,
+      picture: {
+        data: { url: picture },
+      },
+    } = data;
+
+    let user = await User.findOne({ email });
+
+    // If user does not exist, create account
+    if (!user) {
+      const password = await User.encryptPassword(
+        process.env.JWT_SECRET + email
+      );
+      user = await User.create({ name, email, password, picture });
+    }
+
+    // Generate token for user session
+    const token = jwt.sign(
+      { email: user.email, id: user._id },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "2h",
+      }
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "Login successful!",
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        picture: user.picture,
+      },
+      token,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(401).json({
+      error: "Facebook login failed.",
     });
   }
 };
