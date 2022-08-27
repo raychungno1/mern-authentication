@@ -1,7 +1,6 @@
 import { CircularProgress } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { BsCheckLg, BsXLg } from "react-icons/bs";
-import { FaUserPlus } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -47,7 +46,7 @@ const Activate = () => {
   }, []);
 
   return (
-    <div className="relative w-1/2 min-w-[360px] max-w-[480px] mx-auto mt-16 p-8 rounded-2xl bg-white flex flex-col items-center text-center">
+    <div className="relative w-1/2 min-w-[360px] max-w-[480px] mx-auto my-16 p-8 rounded-2xl bg-white flex flex-col items-center text-center shadow-lg">
       {isLoading ? (
         <>
           <div className="w-24 h-24 rounded-full bg-gray-400 text-6xl text-white flex items-center justify-center">

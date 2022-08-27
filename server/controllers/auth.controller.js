@@ -389,7 +389,6 @@ export const googleController = async (req, res) => {
 
 export const facebookController = async (req, res) => {
   const { userID, accessToken } = req.body;
-  console.log(userID, accessToken);
 
   try {
     const url = `https://graph.facebook.com/v14.0/${userID}?fields=id,name,email,picture&access_token=${accessToken}`;
@@ -437,6 +436,43 @@ export const facebookController = async (req, res) => {
     console.log(error);
     return res.status(401).json({
       error: "Facebook login failed.",
+    });
+  }
+};
+
+export const updateController = async (req, res) => {
+  const { userId } = req;
+  const { name: newName } = req.body;
+
+  // Validate request
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const errorMsg = errors.array().map((error) => error.msg)[0];
+    return res.status(422).json({
+      error: errorMsg,
+    });
+  }
+
+  try {
+    const user = await User.findOne({ _id: userId });
+    if (!user) {
+      return res.status(400).json({
+        error: "Something went wrong.",
+      });
+    }
+
+    if (user.name === newName) {
+      return res.status(400).json({ error: "Fields not changed." });
+    }
+
+    user.name = newName;
+    await user.save();
+    return res
+      .status(200)
+      .json({ message: "Profile updated successfully.", user });
+  } catch (error) {
+    return res.status(401).json({
+      error: "Error updating profile.",
     });
   }
 };

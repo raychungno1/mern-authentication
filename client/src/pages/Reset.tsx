@@ -1,24 +1,15 @@
 import React, { ChangeEvent, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { FaUserEdit, FaUserPlus } from "react-icons/fa";
-import { MdVpnKey, MdVisibility, MdVisibilityOff } from "react-icons/md";
+import { FaUserEdit } from "react-icons/fa";
+import { MdVpnKey } from "react-icons/md";
 import { BsCheckLg } from "react-icons/bs";
-import {
-  CircularProgress,
-  Divider,
-  IconButton,
-  InputAdornment,
-  TextField,
-} from "@mui/material";
+import { CircularProgress } from "@mui/material";
 
 import Button from "../common/components/Button";
-
-import {
-  useRegisterMutation,
-  useResetPasswordMutation,
-} from "../store/auth/auth.api";
 import Input from "../common/components/Input";
+
+import { useResetPasswordMutation } from "../store/auth/auth.api";
 
 const initialState = {
   password: "",
@@ -86,7 +77,7 @@ const Reset = () => {
   };
 
   return (
-    <div className="relative w-1/2 min-w-[360px] max-w-[480px] mx-auto mt-16 p-8 rounded-2xl bg-white">
+    <div className="relative w-1/2 min-w-[360px] max-w-[480px] mx-auto my-16 p-8 rounded-2xl bg-white shadow-lg">
       {success ? (
         <div className="flex flex-col items-center text-center">
           <div className="w-24 h-24 rounded-full bg-[#9bc148] text-6xl text-white flex items-center justify-center">

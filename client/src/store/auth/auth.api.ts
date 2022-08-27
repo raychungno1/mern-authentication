@@ -62,6 +62,13 @@ export const api = createApi({
         body: formData,
       }),
     }),
+    updateProfile: builder.mutation({
+      query: (formData) => ({
+        url: "/update",
+        method: "PUT",
+        body: formData,
+      }),
+    }),
   }),
 });
 
@@ -73,4 +80,5 @@ export const {
   useResetPasswordMutation,
   useGoogleLoginMutation,
   useFacebookLoginMutation,
+  useUpdateProfileMutation,
 } = api;

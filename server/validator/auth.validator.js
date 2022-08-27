@@ -42,3 +42,12 @@ export const validResetPassword = [
     .matches(/\d/)
     .withMessage("Password must contain a number."),
 ];
+
+export const validUpdate = [
+  check("name")
+    .notEmpty()
+    .withMessage("Name is required.")
+
+    .isLength({ min: 2, max: 32 })
+    .withMessage("Name must be between 3 to 32 characters."),
+];

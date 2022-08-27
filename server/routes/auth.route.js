@@ -7,6 +7,7 @@ import {
   loginController,
   registerController,
   resetController,
+  updateController,
 } from "../controllers/auth.controller.js";
 
 import {
@@ -14,7 +15,9 @@ import {
   validLogin,
   validForgotPassword,
   validResetPassword,
+  validUpdate,
 } from "../validator/auth.validator.js";
+import requireAuth from "../validator/requireAuth.js";
 
 const router = express.Router();
 
@@ -27,4 +30,7 @@ router.put("/password/reset", validResetPassword, resetController);
 
 router.post("/googlelogin", googleController);
 router.post("/facebooklogin", facebookController);
+
+router.put("/update", [validUpdate, requireAuth], updateController);
+
 export default router;

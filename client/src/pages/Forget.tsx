@@ -3,18 +3,14 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FaQuestion } from "react-icons/fa";
 import { IoMail } from "react-icons/io5";
+import { MdMarkEmailRead } from "react-icons/md";
+import { CircularProgress } from "@mui/material";
 
 import Button from "../common/components/Button";
-
-import {
-  useForgetPasswordMutation,
-  useLoginMutation,
-} from "../store/auth/auth.api";
-import { CircularProgress, InputAdornment, TextField } from "@mui/material";
-import { authenticate } from "../store/auth/auth.slice";
-import { useAppDispatch } from "../common/hooks/useAppRedux";
-import { MdMarkEmailRead } from "react-icons/md";
 import Input from "../common/components/Input";
+
+import { useAppDispatch } from "../common/hooks/useAppRedux";
+import { useForgetPasswordMutation } from "../store/auth/auth.api";
 
 const initialState = {
   email: "",
@@ -58,7 +54,7 @@ const Forget = () => {
   };
 
   return (
-    <div className="relative w-1/2 min-w-[360px] max-w-[480px] mx-auto mt-16 p-8 rounded-2xl bg-white">
+    <div className="relative w-1/2 min-w-[360px] max-w-[480px] mx-auto my-16 p-8 rounded-2xl bg-white shadow-lg">
       {success ? (
         <div className="flex flex-col items-center text-center">
           <div
