@@ -23,7 +23,7 @@ const Register = () => {
             <p className="text-2xl w-full font-bold mt-4 mb-2">
               Verification Email Sent
             </p>
-            <p className="w-full">Check your inbox to verify your account.</p>
+            <p className="w-full">Check your inbox to verify your account. Email may take a few minutes...</p>
           </div>
         ) : (
           <>

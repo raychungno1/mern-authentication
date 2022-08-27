@@ -70,7 +70,7 @@ const Forget = () => {
             Password Reset Email Sent
           </p>
           <p className="w-full">
-            Check your inbox at {email} to reset your password.
+            Check your inbox at {email} to reset your password. Email may take a few minutes...
           </p>
         </div>
       ) : (
