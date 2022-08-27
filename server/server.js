@@ -21,11 +21,11 @@ const app = express();
 // Parse body of requests
 app.use(bodyParser.json());
 
+// CORS for local react frontend
+app.use(cors({ origin: process.env.CLIENT_URL }));
+
 // Development only
 if (process.env.NODE_ENV === "development") {
-  // CORS for local react frontend
-  app.use(cors({ origin: process.env.CLIENT_URL }));
-
   // Logs info about requests
   app.use(morgan("dev"));
 }
